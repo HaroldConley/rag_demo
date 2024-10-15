@@ -12,6 +12,7 @@ uploaded_file = st.file_uploader("Upload your file")
 if uploaded_file is not None:
     bytes_data = uploaded_file.read()
 
+
 # Doc type selection
 doc_type = st.radio(
     "Document type",
@@ -27,3 +28,14 @@ if doc_type == "Narrative or textual":
     temp = 1
 else:
     temp = 2
+
+
+# Query
+txt = st.text_area(
+    "What would you like to know?"
+)
+
+# Answer
+if st.button("Send"):
+    st.write(f"Answer HERE")
+
