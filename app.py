@@ -5,6 +5,7 @@ import streamlit as st
 st.title("Chat with your document")
 
 # Upload
+### PUT A SIZE LIMIT TO IT (10Mb)
 uploaded_file = st.file_uploader("Upload your file")
 
 if uploaded_file is not None:
