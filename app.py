@@ -1,8 +1,10 @@
 import streamlit as st
 from src.chunker.chunker_narrative import ChunkerNarrative
+from src.embedder.embedder import Embedder
 
 # Backend
 chunker = ChunkerNarrative()
+embedder = Embedder()
 
 
 ########################################
@@ -22,7 +24,11 @@ if uploaded_file is not None:
     read_document = bytes_object.decode('utf-8')
 
     # Chunking
-    chunks = chunker.chunker_narrative(read_document)
+    chunks_as_documents = chunker.chunker_narrative(read_document)
+    chunks_as_str = [chunk_as_documents.page_content for chunk_as_documents in chunks_as_documents]
+
+    # Embedding and Vectorstoring
+    vectorstore = embedder.create_vectorstore_for_list(chunks_as_str)
 
 
 # Doc type selection
@@ -43,11 +49,12 @@ else:
 
 
 # Query
-txt = st.text_area(
+query = st.text_area(
     "What would you like to know?"
 )
 
 # Answer
 if st.button("Send"):
-    st.write(f"")
+    answer = embedder.ask_vectorstore(query, vectorstore, 2)
+    st.write(answer)
 
