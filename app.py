@@ -1,15 +1,28 @@
 import streamlit as st
+from src.chunker.chunker_narrative import ChunkerNarrative
+
+# Backend
+chunker = ChunkerNarrative()
 
 
-# UI
+########################################
+################## UI ##################
+########################################
 st.title("Chat with your document")
 
 # Upload
 ### PUT A SIZE LIMIT TO IT (10Mb)
 uploaded_file = st.file_uploader("Upload your file")
+st.write(f"{type(uploaded_file)}")
 
 if uploaded_file is not None:
-    bytes_data = uploaded_file.read()
+    bytes_object = uploaded_file.read()
+
+    # Convert the bytes object to str
+    read_document = bytes_object.decode('utf-8')
+
+    # Chunking
+    chunks = chunker.chunker_narrative(read_document)
 
 
 # Doc type selection
@@ -36,5 +49,5 @@ txt = st.text_area(
 
 # Answer
 if st.button("Send"):
-    st.write(f"Answer HERE")
+    st.write(f"")
 

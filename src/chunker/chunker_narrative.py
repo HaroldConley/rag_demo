@@ -10,10 +10,7 @@ class ChunkerNarrative:
             is_separator_regex=is_separator_regex
         )
 
-    def chunker_narrative(self, doc_path: str) -> list:
-        with open(doc_path, encoding='utf-8') as f:
-            document = f.read()
-
-        chunks = self.text_splitter.create_documents([document])
+    def chunker_narrative(self, read_document: str) -> list:
+        chunks = self.text_splitter.create_documents([read_document])
 
         return chunks
