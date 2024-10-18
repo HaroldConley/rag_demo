@@ -5,7 +5,7 @@ from langchain_openai import OpenAIEmbeddings
 
 class Embedder:
     def __init__(self):
-        self.doc_intell_key = os.environ.get("OPENAI_API_KEY")
+        self.openai_api_key = os.environ.get("OPENAI_API_KEY")
 
         self.embeddings = OpenAIEmbeddings(
             model="text-embedding-3-small"
@@ -18,7 +18,8 @@ class Embedder:
         )
         return vectorstore
 
-    def ask_vectorstore(self, query: str, vectorstore, number_of_results: int = 3) -> list[str]:
+    def ask_vectorstore(self, query: str, vectorstore, number_of_results: int = 3) -> str:
         retrieved_documents = vectorstore.similarity_search(query, k=number_of_results)
-        return [retrieved_document.page_content for retrieved_document in retrieved_documents]
+        retrieved_chunks:list[str] = [retrieved_document.page_content for retrieved_document in retrieved_documents]
+        return "\n\n".join(retrieved_chunks)
 

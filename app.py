@@ -1,10 +1,12 @@
 import streamlit as st
+from src.answerer.answerer import AnswerGenerator
 from src.chunker.chunker_narrative import ChunkerNarrative
 from src.embedder.embedder import Embedder
 
 # Backend
 chunker = ChunkerNarrative()
 embedder = Embedder()
+answerer = AnswerGenerator()
 
 
 ########################################
@@ -15,7 +17,6 @@ st.title("Chat with your document")
 # Upload
 ### PUT A SIZE LIMIT TO IT (10Mb)
 uploaded_file = st.file_uploader("Upload your file")
-st.write(f"{type(uploaded_file)}")
 
 if uploaded_file is not None:
     bytes_object = uploaded_file.read()
@@ -55,6 +56,7 @@ query = st.text_area(
 
 # Answer
 if st.button("Send"):
-    answer = embedder.ask_vectorstore(query, vectorstore, 2)
+    context = embedder.ask_vectorstore(query, vectorstore, 2)
+    answer = answerer.answer_generator(query=query, context=context)
     st.write(answer)
 
